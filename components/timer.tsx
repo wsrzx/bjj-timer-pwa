@@ -1,11 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 
 export default function Timer() {
   const [timeLeft, setTimeLeft] = useState(0)
   const [isActive, setIsActive] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    // Initialize audio element
+    audioRef.current = new Audio('/assets/buzzer.mp3')
+  }, [])
 
   useEffect(() => {
     let interval: NodeJS.Timeout
@@ -47,13 +53,12 @@ export default function Timer() {
   }, [])
 
   const playBuzzer = useCallback(() => {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-    const oscillator = audioContext.createOscillator()
-    oscillator.type = 'square'
-    oscillator.frequency.setValueAtTime(440, audioContext.currentTime)
-    oscillator.connect(audioContext.destination)
-    oscillator.start()
-    oscillator.stop(audioContext.currentTime + 0.5)
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0 // Reset audio to start
+      audioRef.current.play().catch(error => {
+        console.log('Audio playback failed:', error)
+      })
+    }
   }, [])
 
   return (
