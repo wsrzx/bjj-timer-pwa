@@ -5,6 +5,74 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Add viewport height variables for consistent sizing */
+  --vh: 1vh;
+  --vw: 1vw;
+}
+
+/* Update viewport height on resize/orientation change via JavaScript */
+@media screen and (orientation: portrait) {
+  :root {
+    --full-height: 100vh;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  :root {
+    --full-height: 100vh;
+  }
+}
+
+/* Responsive font sizing */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Base mobile-first styles */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* Add mobile viewport height fix */
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* iOS height fix */
+html {
+  height: -webkit-fill-available;
+}
+
+/* Ensure proper touch behavior on mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets for better mobile usability */
+  button, 
+  input, 
+  select, 
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -12,12 +80,6 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer base {
@@ -59,4 +121,60 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+  .timer-display {
+    display: grid;
+    place-items: center;
+    min-height: 40vh;
+    padding: 2rem;
+  }
+
+  .timer-text {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    line-height: 1;
+    font-size: clamp(4rem, 20vw, 16rem);
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Landscape orientation adjustments */
+  @media screen and (orientation: landscape) and (max-height: 500px) {
+    .timer-display {
+      min-height: 30vh;
+      padding: 1rem;
+    }
+    
+    .timer-text {
+      font-size: clamp(3rem, 15vw, 12rem);
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 360px) {
+    .timer-text {
+      font-size: clamp(2.5rem, 15vw, 6rem);
+    }
+  }
+
+  /* Larger screens */
+  @media (min-width: 1024px) {
+    .timer-display {
+      min-height: 50vh;
+    }
+  }
+}
+
+/* Add these base styles if not already present */
+:root {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
