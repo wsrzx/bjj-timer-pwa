@@ -6,8 +6,8 @@ import ClientLayout from './client-layout'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Web Timer PWA',
-  description: 'A simple timer progressive web app',
+  title: 'BJJ Simple Timer',
+  description: 'Simple timer for BJJ',
   manifest: '/manifest.json',
   themeColor: '#1f2937',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',

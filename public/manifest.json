@@ -1,7 +1,7 @@
 {
-    "name": "Web Timer PWA",
-    "short_name": "WebTimer",
-    "description": "A simple timer progressive web app",
+    "name": "BJJ Simple Timer",
+    "short_name": "BJJ Timer",
+    "description": "Simple timer for BJJ",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#1f2937",

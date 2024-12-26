@@ -7,11 +7,54 @@ export default function Timer() {
   const [timeLeft, setTimeLeft] = useState(0)
   const [isActive, setIsActive] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
 
   useEffect(() => {
     // Initialize audio element
     audioRef.current = new Audio('/assets/buzzer.mp3')
+    
+    // Initialize AudioContext for fallback
+    const AudioContextConstructor = 
+      window.AudioContext || ((window as any).webkitAudioContext as typeof AudioContext)
+    audioContextRef.current = new AudioContextConstructor()
   }, [])
+
+  const playFallbackSound = useCallback(() => {
+    if (audioContextRef.current) {
+      const oscillator = audioContextRef.current.createOscillator()
+      const gainNode = audioContextRef.current.createGain()
+
+      oscillator.connect(gainNode)
+      gainNode.connect(audioContextRef.current.destination)
+
+      // Set sound properties
+      oscillator.type = 'square'
+      oscillator.frequency.setValueAtTime(440, audioContextRef.current.currentTime)
+      gainNode.gain.setValueAtTime(0.1, audioContextRef.current.currentTime)
+
+      // Play sound
+      oscillator.start(audioContextRef.current.currentTime)
+      oscillator.stop(audioContextRef.current.currentTime + 0.5)
+
+      // Fade out
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01, 
+        audioContextRef.current.currentTime + 0.5
+      )
+    }
+  }, [])
+
+  const playBuzzer = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0 // Reset audio to start
+      audioRef.current.play().catch(error => {
+        console.log('Audio playback failed, using fallback sound:', error)
+        playFallbackSound()
+      })
+    } else {
+      playFallbackSound()
+    }
+  }, [playFallbackSound])
 
   useEffect(() => {
     let interval: NodeJS.Timeout
@@ -26,7 +69,7 @@ export default function Timer() {
     }
 
     return () => clearInterval(interval)
-  }, [isActive, timeLeft])
+  }, [isActive, timeLeft, playBuzzer])
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60)
@@ -50,15 +93,6 @@ export default function Timer() {
   const stopTimer = useCallback(() => {
     setIsActive(false)
     setTimeLeft(0)
-  }, [])
-
-  const playBuzzer = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0 // Reset audio to start
-      audioRef.current.play().catch(error => {
-        console.log('Audio playback failed:', error)
-      })
-    }
   }, [])
 
   return (
