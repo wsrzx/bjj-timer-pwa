@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: radial-gradient(circle, rgba(4,0,68,1) 0%, rgba(3,1,46,1) 46%, rgba(0,0,0,1) 100%);
+  --foreground: #ffffff;
   
   /* Add viewport height variables for consistent sizing */
   --vh: 1vh;
@@ -45,8 +45,9 @@ html {
 
 /* Base mobile-first styles */
 body {
+  background: rgb(4,0,68);
+  background: radial-gradient(circle, rgba(4,0,68,1) 0%, rgba(3,1,46,1) 46%, rgba(0,0,0,1) 100%);
   color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
@@ -77,21 +78,21 @@ html {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: radial-gradient(circle, rgba(4,0,68,1) 0%, rgba(3,1,46,1) 46%, rgba(0,0,0,1) 100%);
+    --foreground: #ffffff;
   }
 }
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
  
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
  
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
@@ -177,4 +178,28 @@ html {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+}
+
+/* Add or update these base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, 
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Remove any padding from the root layout */
+body > div {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
 }

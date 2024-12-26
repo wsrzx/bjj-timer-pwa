@@ -57,7 +57,7 @@ export default function Timer() {
   }, [])
 
   return (
-    <div className="min-h-[100vh] w-full grid place-items-center bg-background">
+    <div className="h-full w-full grid place-items-center p-0 m-0 bg-transparent">
       <div className="flex flex-col items-center justify-center gap-16">
         <div className="timer-display text-center">
           <span className="timer-text font-mono">{formatTime(timeLeft)}</span>
